@@ -1,6 +1,7 @@
 {
     "env":{
         "MONGO_USER": "johnQL",
-        "MONGO_PASSWORD": "johnJJQL"
+        "MONGO_PASSWORD": "johnJJQL",
+        "MONGO_DB": "events-react-dev"
     }
 }
