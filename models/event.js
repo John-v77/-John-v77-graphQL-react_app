@@ -10,4 +10,4 @@ const eventSchema = new Schema({
 })
 
 //first argument is arbitrary - it will be the name of the schema used in app.js
-mongoose.model('Event', eventSchema)
+module.exports = mongoose.model('Event', eventSchema)
