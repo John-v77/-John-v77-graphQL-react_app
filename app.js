@@ -39,7 +39,16 @@ app.use('/graphql', graphqlHTTP({
             mutation:   RootMutation
         }`),
     rootValue: {
-        events: _=> events,
+        events: _=> {
+            return Event.find()
+            // return is for async await
+                .then(ev => {
+                    return ev.map(event => {
+                        return {...event._doc}
+                    })
+                })
+                .catch(err => { throw err })
+        },
 
 
         // Create event Resolver _________________________________________________
@@ -62,11 +71,9 @@ app.use('/graphql', graphqlHTTP({
                         /* this return .. will leave the meta date behind from the object, 
                         and will return the new added event, using '._doc' */ 
                     })
-                    .catch(err => {
-                        console.log(err)
-                        throw err
+                    .catch(err => { throw err })
                         //must throw and error that graphql can process
-                    });
+                    
         }
         // end of Create event Resolver __________________________________________
     },
