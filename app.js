@@ -43,8 +43,8 @@ app.use('/graphql', graphqlHTTP({
             return Event.find()
             // return is for async await
                 .then(ev => {
-                    return ev.map(event => {
-                        return {...event._doc}
+                    return ev.map(each => {
+                        return {...each._doc, _id:each._doc._id.toString() }
                     })
                 })
                 .catch(err => { throw err })
@@ -67,11 +67,13 @@ app.use('/graphql', graphqlHTTP({
                     // save() is provided by the mongoose package
                     .then(res => {
                         console.log(res)
-                        return {...res._doc}
+                        return {...res._doc, _id: res._doc._id.toString()}
                         /* this return .. will leave the meta date behind from the object, 
                         and will return the new added event, using '._doc' */ 
                     })
-                    .catch(err => { throw err })
+                    .catch(err => { 
+                        console.log(err)
+                        throw err })
                         //must throw and error that graphql can process
                     
         }
