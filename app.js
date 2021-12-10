@@ -12,6 +12,35 @@ const app = express()
 
 app.use(bodyParser.json())
 
+
+// function to be used to retrieve the user info in the resolver
+const user = userId => {
+    return User.findById(userId)
+    .then(user => { 
+        return {
+            ...user._doc,
+             _id :user.id,
+            createdEvents: events.bind(this, createdEvents:events.bind(this, user._doc.createEvents))    
+            }
+        })
+    .catch(err => { throw err })
+}
+
+
+// function to be used to retrieve the events info in the resolver
+const events = eventIds => {
+    return Event.find({_id: {$in: eventIds}}) // $in - special operator in mangoDb
+                .then(events => {
+                    return events.map(event =>{
+                        return {...event._doc,
+                                 _id: event.id,
+                                creator:user.bind(this, event.creator)}
+                    })
+                })
+}
+
+
+
 app.use('/graphql', graphqlHTTP({
     // /the below schema is in a string
     schema: buildSchema(`
@@ -66,10 +95,7 @@ app.use('/graphql', graphqlHTTP({
                         return {
                             ...each._doc,
                             _id:each.id,
-                            creator:{
-                                ...each._doc.creator._doc,
-                                _id: each._doc.creator.id
-                            } 
+                            creator:user.bind(this, each._doc.creator)
                         }
                     })
                 })
@@ -92,7 +118,12 @@ app.use('/graphql', graphqlHTTP({
                     .save()
                     // save() is provided by the mongoose package
                     .then(res => {
-                        createdEvent = {...res._doc, _id: res._doc._id.toString()}
+
+                        createdEvent = {...res._doc,
+                                         _id: res._doc._id.toString(),
+                                        creator: user.bind(this, res._doc.creator)
+                                        }
+                                        
                         return User.findById('5c0d')
                     })
                     .then(user => {
