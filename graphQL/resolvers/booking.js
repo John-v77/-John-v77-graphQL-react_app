@@ -4,7 +4,10 @@ const { transformBooking, transformEvent } = require('./merge-data')
 
 module.exports = {
     // Create booking Resolver _________________________________________________
-    bookings:async _=>{
+    bookings:async (args, req)=>{
+        //adds protected route
+        if(req.isAuth){ throw new Error('Not authenticated!') }
+
         try{
         const bookings = await Booking.find()
         return bookings.map(each =>  transformBooking(each)  )
@@ -28,7 +31,10 @@ module.exports = {
 
 
     // cancel Booking Resolver____________________________________________________
-    cancelBooking: async args => {
+    cancelBooking: async (args, req) => {
+        //adds protected route
+        if(req.isAuth){ throw new Error('Not authenticated!') }
+
         try{
             const booking = await Booking.findById(args.bookingId).populate('event');
             

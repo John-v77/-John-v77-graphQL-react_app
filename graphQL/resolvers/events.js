@@ -12,7 +12,10 @@ module.exports = {
         } catch(err) { throw err }
     },
     // Create event Resolver _________________________________________________
-    createEvent: async (args)=>{
+    createEvent: async (args, req)=>{
+        //adds protected route
+        if(req.isAuth){ throw new Error('Not authenticated!') }
+
         const event = new Event({
             title:args.eventInput.title,
             description: args.eventInput.description,
