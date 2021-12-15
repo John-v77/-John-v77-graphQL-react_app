@@ -5,12 +5,14 @@ const mongoose = require('mongoose')
 
 const graphQLSchema = require('./graphQL/schema/schema-index')
 const graphQLResolvers = require('./graphQL/resolvers/resolvers-index')
-
+const isAuth = require('./midleware/is-auth')
 
 const app = express()
 
 app.use(bodyParser.json())
 
+//will pass this function without executing, for express to execute
+app.use(isAuth)
 
 
 app.use('/graphql', graphqlHTTP({
