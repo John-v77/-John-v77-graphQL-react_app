@@ -13,7 +13,7 @@ app.use(bodyParser.json())
 
 //will pass this function without executing, for express to execute
 app.use(isAuth)
-
+//
 
 app.use('/graphql', graphqlHTTP({
     // /the below schema is in a string
