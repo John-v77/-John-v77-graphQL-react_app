@@ -16,11 +16,14 @@ module.exports = {
 
     
     // Create Book event Resolver __________________________________________________
-    bookEvent: async eventId => {
+    bookEvent: async (args, req) => {
+        
+        if(req.isAuth){ throw new Error('Not authenticated!') }
+        
         try{
         const fetchedEvent = await Event.findOne({_id: args.eventId})
         const booking = new Booking({
-            user: '5c0d',
+            user: req.userId,
             event: fetchedEvent 
         })
         const result = await booking.save()

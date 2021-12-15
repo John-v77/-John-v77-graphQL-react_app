@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const User = require('../../models/user')
 const jwt = require('jsonwebtoken')
+
 module.exports = {   
     // Create User Resolver __________________________________________________
     createUser: async args =>{

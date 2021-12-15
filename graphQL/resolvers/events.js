@@ -21,7 +21,7 @@ module.exports = {
             description: args.eventInput.description,
             price: +args.eventInput.price,
             date: new Date(args.eventInput.date),
-            creator: '5c0d'
+            creator: await User.findById(req.userId)
         })
 
         let createdEvent
@@ -30,7 +30,7 @@ module.exports = {
             // save() is provided by the mongoose package
             createdEvent = transformEvent(result)
 
-            const creator = await User.findById('5c0d')
+            const creator = await User.findById(req.userId)
             if(!creator){ throw new Error('User not found.') }
 
 
