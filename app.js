@@ -11,6 +11,17 @@ const app = express()
 
 app.use(bodyParser.json())
 
+
+//handle CORS error 
+app.use((req, res, next) => {
+    console.log(req.body)
+    res.setHeader('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    if(req.method === 'OPTIONS'){ return res.sendStatus(200)}
+    next()
+})
+
 //will pass this function without executing, for express to execute
 app.use(isAuth)
 //
@@ -23,6 +34,6 @@ app.use('/graphql', graphqlHTTP({
 }))
 
 mongoose.connect(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.rhd9l.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`)
-.then( _=> app.listen(3000), console.log('connected to dataBase'))
+.then( _=> app.listen(5000), console.log('connected to dataBase'))
 .catch(err => {console.log(err)})
 

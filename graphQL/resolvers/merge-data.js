@@ -1,7 +1,7 @@
 const Event = require('../../models/event')
 const User = require('../../models/user')
 const { dateToString } = require('../../helpers/date')
-const {singleEvent, user} = require('./merge-data')
+
 
 // function to be used to retrieve the user info in the resolver
 const user = async userId => {

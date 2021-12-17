@@ -1,0 +1,35 @@
+.login-page{
+    text-align: center;
+}
+
+
+.login-form{
+    width: 20%;
+    margin-left: 38%;
+    padding: 3rem;
+    border: solid 1px black;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form input{
+    background: rgb(241, 240, 240);
+    border: grey;
+    margin: 0.5rem 0;
+    height: 1.5em;
+}
+
+.login-form label{
+    text-align: left;
+}
+
+.login-form button{
+    margin-top: 0.8rem;
+    padding: 0.5rem;
+    background: #16D0FF;
+    width: 20%;
+    border: 0;
+    border-radius: 5px;
+    font-weight: 600;
+}
