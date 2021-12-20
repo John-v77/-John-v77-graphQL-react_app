@@ -4,6 +4,15 @@ import './auth.css';
 function Auth(props) {
 
     const [loginObj, setLoginObj] = useState({})
+    const [stateLogin, setStateLogin] = useState(true)
+
+    const switchMode =(e)=>{
+
+        e.preventDefault()
+        setStateLogin(!stateLogin)
+
+        console.log(stateLogin)
+    }
 
     const recordVal = (e)=>{
         setLoginObj({...loginObj, [e.target.name] : e.target.value})
@@ -68,7 +77,7 @@ function Auth(props) {
 
     return (
         <div className='login-page'>
-            <h1>Login</h1>
+            <h1>{stateLogin ? 'Login' :'Register'}</h1>
             <form onSubmit={sendReq} className='login-form'>
                 <label>username</label>
                     <input onChange={recordVal} type={'text'} placeholder='username' name='username'/>
@@ -77,6 +86,7 @@ function Auth(props) {
                     <input onChange={recordVal} type={'text'} placeholder='password' name='password'/>
                 
                 <button type='submit'>Login</button>
+                <button type='button' onClick={switchMode}>Switch to {stateLogin ? 'Register' : 'Login'}</button>
             </form>
         </div>
     );
