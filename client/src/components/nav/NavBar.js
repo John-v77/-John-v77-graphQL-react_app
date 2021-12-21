@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './navbar.css'
+import {UserContext} from '../../context/auth-context'
 
 function NavBar(props) {
+
+    const [user, setUser] = useContext(UserContext)
+
+    console.log(user, 'nav')
+
     return (
         <header className='header'>
             <div className='nav-logo'>

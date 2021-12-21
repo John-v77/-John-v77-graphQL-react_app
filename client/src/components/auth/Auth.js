@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios'
 import './auth.css';
+import {UserContext} from '../../context/auth-context'
+
 function Auth(props) {
 
     const [loginObj, setLoginObj] = useState({})
     const [stateLogin, setStateLogin] = useState(true)
+
+    const [user, setUser] = useContext(UserContext)
+
+    console.log(user)
 
     const switchMode =(e)=>{
 
