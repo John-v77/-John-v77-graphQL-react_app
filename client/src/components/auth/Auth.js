@@ -25,11 +25,6 @@ function Auth(props) {
         console.log('loginObj', loginObj)}
 
 
-    const requestBody = `mutation: createUser(userInput: {email: "${loginObj.username}", password:"${loginObj.password}"}){
-            _id
-            email
-        }`
-    
 
     const sendReq = (e)=>{
         e.preventDefault()
@@ -42,12 +37,7 @@ function Auth(props) {
             "Authorization": "<token>"
         }
 
-        const graphqlQuery = {
-            "operation":"fetchAuthor",
-            "query": requestBody,
-            "variables":{}
-        }
-
+        // GraphQl query for Loging in the user
         const LoginUserQuery ={
             query:`
                 query{
@@ -56,7 +46,7 @@ function Auth(props) {
             `
         }
 
-
+        // GraphQl mutation creating the user
         const createUserQuery={
             query:`
                 mutation{
@@ -69,13 +59,21 @@ function Auth(props) {
             url : endpoint,
             method: 'post',
             headers: headers,
-            data: createUserQuery
+            data: stateLogin ? createUserQuery : LoginUserQuery
             })
             .then((res) => {
                 if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
                 return res
             })
             .then(resData => {
+                if(resData.data.data.login.token){
+                    // console.log('token present')
+                    setUser({
+                        token:              resData.data.data.login.token,
+                        userId:             resData.data.data.login.userId,
+                        tokenExpriration :  resData.data.data.login.token
+                    })
+                }
                 console.log(resData)
             })
             .catch((err) => console.log(err)) 
@@ -83,7 +81,7 @@ function Auth(props) {
 
     return (
         <div className='login-page'>
-            <h1>{stateLogin ? 'Login' :'Register'}</h1>
+            <h1>{stateLogin ? 'Register' : 'Login'}</h1>
             <form onSubmit={sendReq} className='login-form'>
                 <label>username</label>
                     <input onChange={recordVal} type={'text'} placeholder='username' name='username'/>
@@ -91,8 +89,8 @@ function Auth(props) {
                 <label>password</label>
                     <input onChange={recordVal} type={'text'} placeholder='password' name='password'/>
                 
-                <button type='submit'>Login</button>
-                <button type='button' onClick={switchMode}>Switch to {stateLogin ? 'Register' : 'Login'}</button>
+                <button type='submit'>{stateLogin ? 'Register' : 'Login'}</button>
+                <button type='button' onClick={switchMode}>Switch to {stateLogin ? 'Login' : 'Register'}</button>
             </form>
         </div>
     );

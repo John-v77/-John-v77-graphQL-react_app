@@ -5,7 +5,8 @@ export const UserContext = React.createContext()
 export const UserProviderContext =(props)=>{
     const [user, setUser] = useState({
         token:null,
-        user:'test',
+        user:null,
+        tokenExpriration:null,
     })
 
     const login=()=>{}
