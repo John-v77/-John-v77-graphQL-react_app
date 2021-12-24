@@ -9,6 +9,12 @@ function NavBar(props) {
 
     console.log(user.token, 'nav')
 
+    const logOut =()=>{setUser({
+        token:              null,
+        userId:             null,
+        tokenExpriration :  null
+    })}
+
     return (
         <header className='header'>
             <div className='nav-logo'>
@@ -19,7 +25,11 @@ function NavBar(props) {
                 <ul>
                     {!user.token &&     <li> <Link to='/auth'>  Login  </Link> </li>}
                                         <li> <Link to='/events'> Events </Link> </li>
-                    {user.token &&      <li> <Link to='/booking'> Booking </Link> </li>}
+                    {user.token &&  <>
+                                        <li> <Link to='/booking'> Booking </Link> </li>
+                                        <li> <Link to='/' onClick={logOut}>  Logout  </Link></li>
+                                    </>
+                    }
                 </ul>
             </nav>
         </header>
