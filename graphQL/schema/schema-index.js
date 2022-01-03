@@ -18,7 +18,7 @@ module.exports = buildSchema(`
         description:String!
         price:Float!
         date:String!
-        creator:String!
+        creator:User!
     }
 
     type User{
@@ -53,7 +53,7 @@ module.exports = buildSchema(`
     }
 
     type RootMutation{
-        createEvent(eventInput : EventInput):[String]
+        createEvent(eventInput : EventInput):Event
         createUser(userInput: UserInput):User
         bookEvent(eventId: ID!): Booking!
         cancelBooking(bookingId: ID!): Event!

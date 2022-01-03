@@ -4,24 +4,27 @@ const { transformEvent } = require('./merge-data')
 
 module.exports = {
 
+    // Fetch event resolver
     events: async _=> {
 
         try{
             const events = await Event.find()
-            return ev.map(each =>   transformEvent(each)    )
+            return events.map(each =>   transformEvent(each)    )
         } catch(err) { throw err }
     },
+
+
     // Create event Resolver _________________________________________________
     createEvent: async (args, req)=>{
         //adds protected route
-        if(req.isAuth){ throw new Error('Not authenticated!') }
+        if(!req.isAuth){ throw new Error('Not authenticated!') }
 
         const event = new Event({
             title:args.eventInput.title,
             description: args.eventInput.description,
             price: +args.eventInput.price,
             date: new Date(args.eventInput.date),
-            creator: await User.findById(req.userId)
+            creator: req.userId
         })
 
         let createdEvent

@@ -10,19 +10,20 @@ function Auth(props) {
 
     const [user, setUser] = useContext(UserContext)
 
-    console.log(user)
+    // console.log(user)
 
     const switchMode =(e)=>{
 
         e.preventDefault()
         setStateLogin(!stateLogin)
 
-        console.log(stateLogin)
+        // console.log(stateLogin)
     }
 
     const recordVal = (e)=>{
         setLoginObj({...loginObj, [e.target.name] : e.target.value})
-        console.log('loginObj', loginObj)}
+        // console.log('loginObj', loginObj)
+    }
 
 
 
@@ -41,7 +42,11 @@ function Auth(props) {
         const LoginUserQuery ={
             query:`
                 query{
-                    login(email: "${loginObj.username}", password:"${loginObj.password}")
+                    login(email: "${loginObj.username}", password:"${loginObj.password}"){
+                        userId
+                        token
+                        tokenExpiration
+                    }
                 }
             `
         }
@@ -50,7 +55,10 @@ function Auth(props) {
         const createUserQuery={
             query:`
                 mutation{
-                    createUser(userInput: {email:"${loginObj.username}", password:"${loginObj.password}"})
+                    createUser(userInput: {email:"${loginObj.username}", password:"${loginObj.password}"}){
+                        _id
+                        email
+                    }
                 }
             `
         }
@@ -59,7 +67,7 @@ function Auth(props) {
             url : endpoint,
             method: 'post',
             headers: headers,
-            data: stateLogin ? createUserQuery : LoginUserQuery
+            data: stateLogin ? LoginUserQuery : createUserQuery
             })
             .then((res) => {
                 if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
@@ -67,21 +75,21 @@ function Auth(props) {
             })
             .then(resData => {
                 if(resData.data.data.login.token){
-                    // console.log('token present')
+                    console.log('token present')
                     setUser({
                         token:              resData.data.data.login.token,
                         userId:             resData.data.data.login.userId,
                         tokenExpriration :  resData.data.data.login.token
                     })
                 }
-                console.log(resData)
+                console.log(resData.data.data)
             })
             .catch((err) => console.log(err)) 
     }
 
     return (
         <div className='login-page'>
-            <h1>{stateLogin ? 'Register' : 'Login'}</h1>
+            <h1>{stateLogin ? 'Login' : 'Register'}</h1>
             <form onSubmit={sendReq} className='login-form'>
                 <label>username</label>
                     <input onChange={recordVal} type={'text'} placeholder='username' name='username'/>
@@ -89,8 +97,8 @@ function Auth(props) {
                 <label>password</label>
                     <input onChange={recordVal} type={'text'} placeholder='password' name='password'/>
                 
-                <button type='submit'>{stateLogin ? 'Register' : 'Login'}</button>
-                <button type='button' onClick={switchMode}>Switch to {stateLogin ? 'Login' : 'Register'}</button>
+                <button type='submit'>{stateLogin ? 'Login' : 'Register'}</button>
+                <button type='button' onClick={switchMode}>Switch to {stateLogin ? 'Register' : 'Login' }</button>
             </form>
         </div>
     );
