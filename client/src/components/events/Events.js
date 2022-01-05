@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/auth-context';
 import Backdrop from '../backdrop/Backdrop';
 import Modal from '../modal/Modal';
@@ -9,9 +9,11 @@ function Events(props) {
 
     const [user] = useContext(UserContext)
     const token = user.token
+    // console.log(user)
  
     const [creatingEvent, setCreatingEvent] = useState(false)
     const [eventCreated, setEventCreated] = useState({})
+    const [eventsList, setEventsList] = useState([])
 
     const createEventHandler =()=>{setCreatingEvent(true)}
 
@@ -35,7 +37,7 @@ function Events(props) {
             ) return
 
 
-        // sending data
+        // sending data - Create Event
 
         const endpoint = 'http://localhost:5000/graphql'
         const headers ={
@@ -77,19 +79,54 @@ function Events(props) {
                 return res
             })
             .then(resData => {
-                // if(resData.data.data.login.token){
-                //     // console.log('token present')
-                //     setUser({
-                //         token:              resData.data.data.login.token,
-                //         userId:             resData.data.data.login.userId,
-                //         tokenExpriration :  resData.data.data.login.token
-                //     })
-                // }
                 console.log(resData)
+                fetchEvents()
             })
             .catch((err) => console.log(err)) 
 
     }
+
+    //Fetch all events
+    const fetchEvents =()=>{
+        const requestBody = {
+            query:`
+                query{
+                    events{
+                        _id
+                        title
+                        description
+                        date
+                        price
+                        
+                    }
+                }
+            `
+        }
+
+        const endpoint = 'http://localhost:5000/graphql'
+        const headers ={ "content-type":"application/json" }
+
+
+        axios({
+            url : endpoint,
+            method: 'post',
+            headers: headers,
+            data: requestBody
+            })
+            .then((res) => {
+                if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
+                return res
+            })
+            .then(resData => {
+                
+                console.log(resData.data.data.events)
+                setEventsList(resData.data.data.events)
+            })
+            .catch((err) => console.log(err)) 
+    }
+
+
+    useEffect(()=>{fetchEvents()}, [])
 
 
     return (
@@ -109,10 +146,10 @@ function Events(props) {
                                             <label htmlFor="price">Price</label>
                                             <input type="number" onChange={recordVal} id="price" placeholder='9.99'></input>
                                         </div>
-                                        {/* <div className='form-control'>
+                                        <div className='form-control'>
                                             <label htmlFor="date">Date</label>
                                             <input type="datetime-local" onChange={recordVal} id="date"></input>
-                                        </div> */}
+                                        </div>
                                         <div className='form-control'>
                                             <label htmlFor="description">Description</label>
                                             <textarea rows={'4'} onChange={recordVal} id="description"></textarea>
@@ -127,9 +164,16 @@ function Events(props) {
                         </div>}
 
                         <ul className='events__list'>
-                            <li className='events__list-item'>
-                                Test
-                            </li>
+                            {
+                                eventsList.map(each =>{
+                                return (
+                                    <li className='events__list-item' key={each._id}>
+                                        {each.title}
+                                    </li>
+                                    )
+                                })
+                            }
+                            
                         </ul>
             
         </div>
