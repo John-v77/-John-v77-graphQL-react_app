@@ -5,10 +5,10 @@ import {UserContext} from '../../context/auth-context'
 
 function NavBar(props) {
 
-    const [user, setUser] = useContext(UserContext)
+    const [user, setUser]= useContext(UserContext)
 
-    console.log(user.token, 'nav')
 
+    console.log(user, "NavBar")
     const logOut =()=>{setUser({
         token:              null,
         userId:             null,
@@ -32,6 +32,7 @@ function NavBar(props) {
                     }
                 </ul>
             </nav>
+            <p>{`Welcome: ${user.userId}`}</p>       
         </header>
     );
 }
