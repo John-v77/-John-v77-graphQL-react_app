@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react';
 import axios from 'axios'
 import './auth.css';
-import {UserContext} from '../../context/auth-context'
+import { UserContext } from '../aux-components/context/auth-context';
+
 
 function Auth(props) {
 

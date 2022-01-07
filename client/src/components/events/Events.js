@@ -1,8 +1,9 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/auth-context';
-import Backdrop from '../backdrop/Backdrop';
-import Modal from '../modal/Modal';
+import { UserContext } from '../aux-components/context/auth-context';
+import Backdrop from '../aux-components/backdrop/Backdrop';
+import Modal from '../aux-components/modal/Modal';
+import EventList from '../aux-components/event-list/EventList';
 import './events.css'
 
 function Events(props) {
@@ -77,13 +78,12 @@ function Events(props) {
             .then((res) => {
                 if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
                 return res
-            })
             .then(resData => {
-                console.log(resData)
                 fetchEvents()
             })
             .catch((err) => console.log(err)) 
 
+    })
     }
 
     //Fetch all events
@@ -162,20 +162,7 @@ function Events(props) {
                             <p>Share your own Events!</p>
                             <button className='btn' onClick={createEventHandler}> Create Event</button>
                         </div>}
-
-                        <ul className='events__list'>
-                            {
-                                eventsList.map(each =>{
-                                return (
-                                    <li className='events__list-item' key={each._id}>
-                                        {each.title}
-                                    </li>
-                                    )
-                                })
-                            }
-                            
-                        </ul>
-            
+                    <EventList events={eventsList} />
         </div>
     );
 }

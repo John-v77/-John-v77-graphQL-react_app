@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './navbar.css'
-import {UserContext} from '../../context/auth-context'
+import {UserContext} from '../context/auth-context'
 
 function NavBar(props) {
 

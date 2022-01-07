@@ -4,8 +4,8 @@ import './App.css';
 import Events from './components/events/Events';
 import Booking from './components/booking/Booking';
 import Auth from './components/auth/Auth';
-import NavBar from './components/nav/NavBar';
-import {UserProviderContext} from './context/auth-context'
+import NavBar from './components/aux-components/nav/NavBar';
+import {UserProviderContext} from './components/aux-components/context/auth-context'
 
 function App() {
 
@@ -13,15 +13,17 @@ function App() {
     <div className="App">
       <h1>Welcome</h1>
       <UserProviderContext>
+
         <NavBar/>
         
         {/* Define all the routes */}
         <Routes>
         {/* !this.state.token && <Redirect from "/" to="auth" exact/> */}
         {/* this.state.token && <Redirect from "/" to="events" exact/> */}
+          <Route path='/' element={<Events/>}/>
           <Route path='/auth' element={<Auth/>}/>
-          <Route path='/events' element={<Events/>}></Route>
-          <Route path='/booking' element={<Booking/>}></Route>
+          <Route path='/events' element={<Events/>}/>
+          <Route path='/booking' element={<Booking/>}/>
         </Routes>
       </UserProviderContext>
     </div>
