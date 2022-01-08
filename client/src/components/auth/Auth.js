@@ -9,7 +9,7 @@ function Auth(props) {
     const [loginObj, setLoginObj] = useState({})
     const [stateLogin, setStateLogin] = useState(true)
 
-    const [user, setUser] = useContext(UserContext)
+    const [setUser] = useContext(UserContext)
 
     // console.log(user)
 

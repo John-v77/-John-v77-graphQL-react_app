@@ -1,10 +1,11 @@
-import axios from 'axios'
+import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../aux-components/context/auth-context';
 import Backdrop from '../aux-components/backdrop/Backdrop';
 import Modal from '../aux-components/modal/Modal';
+import Spinner from '../aux-components/spinner/Spinner';
 import EventList from '../aux-components/event-list/EventList';
-import './events.css'
+import './events.css';
 
 function Events(props) {
 
@@ -15,6 +16,7 @@ function Events(props) {
     const [creatingEvent, setCreatingEvent] = useState(false)
     const [eventCreated, setEventCreated] = useState({})
     const [eventsList, setEventsList] = useState([])
+    const [isLoading, setIsLoading] = useState(false)
 
     const createEventHandler =()=>{setCreatingEvent(true)}
 
@@ -88,6 +90,8 @@ function Events(props) {
 
     //Fetch all events
     const fetchEvents =()=>{
+
+        setIsLoading(true)
         const requestBody = {
             query:`
                 query{
@@ -121,8 +125,12 @@ function Events(props) {
                 
                 console.log(resData.data.data.events)
                 setEventsList(resData.data.data.events)
+                setIsLoading(false)
             })
-            .catch((err) => console.log(err)) 
+            .catch((err) => {
+                console.log(err)
+                setIsLoading(false)
+            }) 
     }
 
 
@@ -131,7 +139,7 @@ function Events(props) {
 
     return (
         <div>
-            
+                
                 {creatingEvent && <Backdrop/>}
                 {creatingEvent && 
                                 <Modal title="Add Event" canCancel canConfirm onCancel={modalCancel} onConfirm={modalConfirm}>
@@ -162,6 +170,7 @@ function Events(props) {
                             <p>Share your own Events!</p>
                             <button className='btn' onClick={createEventHandler}> Create Event</button>
                         </div>}
+                    {isLoading && <Spinner/>}
                     <EventList events={eventsList} />
         </div>
     );
