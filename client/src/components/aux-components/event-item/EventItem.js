@@ -2,11 +2,32 @@ import React, { useState } from 'react';
 import './eventItem.css'
 
 function EventItem(props) {
+
+    console.log(props)
+
     const [checkDetails, setCheckDetails] = useState(false)
 
     const showDetails =(e)=> setCheckDetails(!checkDetails)
     
-    const bookEventHandler =(e)=>{}
+    const bookEventHandler =(e)=>{
+        const requestBody = {
+            query:`
+                mutation{
+                    bookEvent(eventId:"${props.key}"){
+                        _id
+                        title
+                        description
+                        date
+                        price
+                        creator{
+                            _id
+                            email
+                        }
+                    }
+                }
+            `
+        }
+    }
 
     return (
         <li key={props.eventId} className="events__list-item">
@@ -21,7 +42,8 @@ function EventItem(props) {
             {checkDetails && <div className='events__list-item__details'>
                 <h3>{new Date(props.date).toLocaleString()}</h3>
                 <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. A eum harum asperiores, quam iusto quod sunt!</p>
-                <p>{`Creator: ${props.creator}`}</p>
+                <p>{`Creator: ${props.creatorId}`}</p>
+                <p>{`Event ID: ${props.eventId}`}</p>
                 <button onClick={bookEventHandler} className='btn'>Book</button>
             </div>}
         </li>

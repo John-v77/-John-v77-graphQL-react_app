@@ -101,7 +101,10 @@ function Events(props) {
                         description
                         date
                         price
-                        
+                        creator{
+                            _id
+                            email
+                        }
                     }
                 }
             `
