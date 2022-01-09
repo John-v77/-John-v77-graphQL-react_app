@@ -5,7 +5,7 @@ export const UserContext = React.createContext()
 export const UserProviderContext =(props)=>{
     const [user, setUser] = useState({
         token:'marias!',
-        user:null,
+        user:"Mary",
         tokenExpriration:null,
     })
 

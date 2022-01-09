@@ -11,6 +11,9 @@ function EventList(props) {
                 title={each.title}
                 price={each.price}
                 date={each.date}
+                description={each.date}
+                creator={each._id}
+                userId={props.userId}
             />
         )
     })

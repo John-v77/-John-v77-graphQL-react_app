@@ -4,12 +4,12 @@
     border: 1px solid #0307d8;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .events__list-item h2{
     margin: 0;
     font-size: 1.5rem;
-    color: #5101d1;
 }
 
 
@@ -17,8 +17,9 @@
     margin: 0;
     font-size: 1rem;
     color: #7c7c7c;
+    margin: 0.8rem 0;
 }
 
 .events__list-item p {
-    margin: 0;
+    margin: 0 0 0.8rem 0;
 }

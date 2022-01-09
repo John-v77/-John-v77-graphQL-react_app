@@ -171,7 +171,7 @@ function Events(props) {
                             <button className='btn' onClick={createEventHandler}> Create Event</button>
                         </div>}
                     {isLoading && <Spinner/>}
-                    <EventList events={eventsList} />
+                    <EventList events={eventsList} userId={user.user} />
         </div>
     );
 }
