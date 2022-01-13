@@ -80,12 +80,13 @@ function Events(props) {
             .then((res) => {
                 if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
                 return res
-            .then(resData => {
+            })
+            .then(res => {
                 fetchEvents()
             })
             .catch((err) => console.log(err)) 
 
-    })
+    
     }
 
     //Fetch all events

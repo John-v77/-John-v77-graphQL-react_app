@@ -1,32 +1,56 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useContext, useState } from 'react';
+import { UserContext } from '../context/auth-context';
 import './eventItem.css'
 
 function EventItem(props) {
 
-    console.log(props)
+    console.log(props, 'item Event')
+
+    const [user] = useContext(UserContext)
+
+    const token = user.token
 
     const [checkDetails, setCheckDetails] = useState(false)
 
     const showDetails =(e)=> setCheckDetails(!checkDetails)
     
     const bookEventHandler =(e)=>{
-        const requestBody = {
+        const requestBookEvent = {
             query:`
                 mutation{
-                    bookEvent(eventId:"${props.key}"){
+                    bookEvent(eventId:"${props.eventId}"){
                         _id
-                        title
-                        description
-                        date
-                        price
-                        creator{
-                            _id
-                            email
-                        }
+                        createdAt
+                        updatedAt
                     }
                 }
             `
         }
+
+
+        const endpoint = 'http://localhost:5000/graphql'
+        const headers ={
+            "content-type":"application/json",
+            "Authorization": 'Bearer ' + token
+        }
+
+
+        axios({
+            url : endpoint,
+            method: 'post',
+            headers: headers,
+            data: requestBookEvent
+            })
+            .then((res) => {
+                if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
+                return res})
+            .then(resData => {
+                
+                console.log(resData.data.data)
+                
+            })
+            .catch((err) => console.log(err)) 
     }
 
     return (
@@ -41,6 +65,7 @@ function EventItem(props) {
             </div>
             {checkDetails && <div className='events__list-item__details'>
                 <h3>{new Date(props.date).toLocaleString()}</h3>
+                <p>{props.description}</p>
                 <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. A eum harum asperiores, quam iusto quod sunt!</p>
                 <p>{`Creator: ${props.creatorId}`}</p>
                 <p>{`Event ID: ${props.eventId}`}</p>

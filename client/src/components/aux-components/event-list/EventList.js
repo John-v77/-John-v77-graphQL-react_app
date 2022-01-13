@@ -9,12 +9,12 @@ function EventList(props) {
         console.log(each, 'id^^')
         return (
             <EventItem
-                key={each._id}
+                
                 eventId={each._id}
                 title={each.title}
                 price={each.price}
                 date={each.date}
-                description={each.date}
+                description={each.description}
                 creatorId={each.creator.email} //needs update once the back end is in order
                 userId={props.userId}
             />
