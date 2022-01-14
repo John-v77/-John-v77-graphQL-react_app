@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../aux-components/context/auth-context';
-import Backdrop from '../aux-components/backdrop/Backdrop';
-import Modal from '../aux-components/modal/Modal';
-import Spinner from '../aux-components/spinner/Spinner';
-import EventList from '../aux-components/event-list/EventList';
+import { UserContext } from '../../aux-components/context/auth-context';
+import Backdrop from '../../aux-components/backdrop/Backdrop';
+import Modal from '../../aux-components/modal/Modal';
+import Spinner from '../../aux-components/spinner/Spinner';
+import EventList from '../../aux-components/event-list/EventList';
 import './events.css';
 
 function Events(props) {

@@ -1,9 +1,9 @@
 
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import Events from './components/events/Events';
-import Booking from './components/booking/Booking';
-import Auth from './components/auth/Auth';
+import Events from './components/pages/events/Events';
+import Booking from './components/pages/booking/Booking';
+import Auth from './components/pages/auth/Auth';
 import NavBar from './components/aux-components/nav/NavBar';
 import {UserProviderContext} from './components/aux-components/context/auth-context'
 

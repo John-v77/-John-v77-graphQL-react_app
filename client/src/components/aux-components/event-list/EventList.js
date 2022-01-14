@@ -9,7 +9,6 @@ function EventList(props) {
         console.log(each, 'id^^')
         return (
             <EventItem
-                
                 eventId={each._id}
                 title={each.title}
                 price={each.price}
