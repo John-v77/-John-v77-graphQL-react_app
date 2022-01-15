@@ -93,10 +93,10 @@ const queriesGraphQL= {
 
     // #6. GraphQl mutation for booking events
     bookEventMutation : (data) => {
-        return {
+          return {
             query:`
                 mutation{
-                    bookEvent(eventId:"${data.eventId}"){
+                    bookEvent(eventId:"${data}"){
                         _id
                         createdAt
                         updatedAt

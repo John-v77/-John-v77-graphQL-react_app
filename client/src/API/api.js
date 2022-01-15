@@ -14,7 +14,7 @@ const headers ={
 
 const actions ={
 
-    //Login API call
+    // #1. Login API call
     login: async(data, isLogin) => {
 
         const queryZ = isLogin ? queriesGraphQL.loginUserQuery(data) : queriesGraphQL.createUserMutation(data)
@@ -28,7 +28,7 @@ const actions ={
         return resFromDB
     },
 
-    //Create Events API call
+    // #2. Create Events API call
     createEvent: async(data, token) => {
 
         const newHeader ={
@@ -46,6 +46,7 @@ const actions ={
 
     },
 
+    // #3. Fetch Events API call
     fetchEvents: async()=>{
         let resFromDB = await axios({
             url : baseURL,
@@ -54,7 +55,34 @@ const actions ={
             data : queriesGraphQL.fetchEventsQuery
         })
         return resFromDB
-    }
+    },
+
+    // #4. Create Events API call
+    bookEvents: async(data, token)=>{
+        const newHeader ={
+            "content-type":"application/json",
+            "Authorization": 'Bearer ' + token
+        }
+
+        let resFromDB = await axios({
+            url : baseURL,
+            method: 'post',
+            headers: newHeader,
+            data : queriesGraphQL.bookEventMutation(data)
+        })
+        return resFromDB
+    },
+
+    // #5. Fetch Events API call
+    fetchBookedEvents: async()=>{
+        let resFromDB = await axios({
+            url : baseURL,
+            method: 'post',
+            headers: headers,
+            data : queriesGraphQL.fetchedBookedEventQuery
+        })
+        return resFromDB
+    },
 }
 
 

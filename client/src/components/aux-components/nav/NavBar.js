@@ -8,7 +8,7 @@ function NavBar(props) {
     const [user, setUser]= useContext(UserContext)
 
 
-    console.log(user, "NavBar")
+    // console.log(user, "NavBar")
     const logOut =()=>{setUser({
         token:              null,
         userId:             null,

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { UserContext } from '../context/auth-context';
 import './eventItem.css'
+import actions from '../../../API/api'
 
 function EventItem(props) {
 
@@ -10,38 +11,15 @@ function EventItem(props) {
     const [user] = useContext(UserContext)
 
     const token = user.token
+    let eventIdz = props.eventId
 
     const [checkDetails, setCheckDetails] = useState(false)
-
     const showDetails =(e)=> setCheckDetails(!checkDetails)
     
     const bookEventHandler =(e)=>{
-        const requestBookEvent = {
-            query:`
-                mutation{
-                    bookEvent(eventId:"${props.eventId}"){
-                        _id
-                        createdAt
-                        updatedAt
-                    }
-                }
-            `
-        }
-
-
-        const endpoint = 'http://localhost:5000/graphql'
-        const headers ={
-            "content-type":"application/json",
-            "Authorization": 'Bearer ' + token
-        }
-
-
-        axios({
-            url : endpoint,
-            method: 'post',
-            headers: headers,
-            data: requestBookEvent
-            })
+        
+        //API call
+        actions.bookEvents(eventIdz, token)
             .then((res) => {
                 if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
                 return res})
