@@ -5,7 +5,7 @@ import './eventItem.css'
 
 function EventItem(props) {
 
-    console.log(props, 'item Event')
+    // console.log(props, 'item Event')
 
     const [user] = useContext(UserContext)
 
@@ -45,11 +45,9 @@ function EventItem(props) {
             .then((res) => {
                 if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
                 return res})
-            .then(resData => {
-                
-                console.log(resData.data.data)
-                
-            })
+            // .then(resData => {
+            //     console.log(resData.data.data) 
+            // })
             .catch((err) => console.log(err)) 
     }
 

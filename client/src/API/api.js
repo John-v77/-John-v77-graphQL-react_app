@@ -12,9 +12,9 @@ const headers ={
 
 
 
-
-
 const actions ={
+
+    //Login API call
     login: async(data, isLogin) => {
 
         const queryZ = isLogin ? queriesGraphQL.loginUserQuery(data) : queriesGraphQL.createUserMutation(data)
@@ -25,14 +25,36 @@ const actions ={
             headers: headers,
             data : queryZ
         })
-        
-
-        // console.log(resFromDB, 'API file login ************')
-
-        // window.localStorage.setItem('token', resFromDB?.data?.token)
-
         return resFromDB
     },
+
+    //Create Events API call
+    createEvent: async(data, token) => {
+
+        const newHeader ={
+            "content-type":"application/json",
+            "Authorization": 'Bearer ' + token
+        }
+
+        let resFromDB = await axios({
+            url : baseURL,
+            method: 'post',
+            headers: newHeader,
+            data : queriesGraphQL.createEventMutation(data)
+        })
+        return resFromDB
+
+    },
+
+    fetchEvents: async()=>{
+        let resFromDB = await axios({
+            url : baseURL,
+            method: 'post',
+            headers: headers,
+            data : queriesGraphQL.fetchEventsQuery
+        })
+        return resFromDB
+    }
 }
 
 

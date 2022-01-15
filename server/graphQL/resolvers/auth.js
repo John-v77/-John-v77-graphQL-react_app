@@ -17,7 +17,7 @@ module.exports = {
             })
 
             const result = await user.save()
-
+            console.log(result, 'result')
             return {...result._doc, password:null,  _id: result.id}    
 
         }catch(err) { throw err }

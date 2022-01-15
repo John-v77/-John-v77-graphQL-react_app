@@ -6,7 +6,7 @@ function EventList(props) {
 
 
     const events = props.events.map(each => {
-        console.log(each, 'id^^')
+        // console.log(each, 'id^^')
         return (
             <EventItem
                 eventId={each._id}

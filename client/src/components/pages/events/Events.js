@@ -5,6 +5,7 @@ import Backdrop from '../../aux-components/backdrop/Backdrop';
 import Modal from '../../aux-components/modal/Modal';
 import Spinner from '../../aux-components/spinner/Spinner';
 import EventList from '../../aux-components/event-list/EventList';
+import actions from '../../../API/api'
 import './events.css';
 
 function Events(props) {
@@ -30,8 +31,6 @@ function Events(props) {
         e.preventDefault()
         setCreatingEvent(false)
         
-
-        console.log(eventCreated)
         // guard clause
 
         if (eventCreated.title.trim().lenght === 0 ||
@@ -40,43 +39,8 @@ function Events(props) {
             ) return
 
 
-        // sending data - Create Event
-
-        const endpoint = 'http://localhost:5000/graphql'
-        const headers ={
-            "content-type":"application/json",
-            "Authorization": 'Bearer ' + token
-        }
-
-        // GraphQl mutation creating the user
-        const createEventMutation={
-            query:`
-                mutation{
-                    createEvent(eventInput: {title:"${eventCreated.title}", 
-                                             price:${+eventCreated.price},
-                                             date:"${eventCreated.date}",
-                                             description:"${eventCreated.description}",
-                                            }) {
-                                                _id
-                                                title
-                                                description
-                                                date
-                                                price
-                                                creator{
-                                                    _id
-                                                    email
-                                                }
-                                            }
-                }
-            `
-        }
-
-        axios({
-            url : endpoint,
-            method: 'post',
-            headers: headers,
-            data: createEventMutation
-            })
+        //API call
+        actions.createEvent(eventCreated, token)
             .then((res) => {
                 if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
                 return res
@@ -86,48 +50,21 @@ function Events(props) {
             })
             .catch((err) => console.log(err)) 
 
-    
     }
 
     //Fetch all events
     const fetchEvents =()=>{
 
         setIsLoading(true)
-        const requestBody = {
-            query:`
-                query{
-                    events{
-                        _id
-                        title
-                        description
-                        date
-                        price
-                        creator{
-                            _id
-                            email
-                        }
-                    }
-                }
-            `
-        }
 
-        const endpoint = 'http://localhost:5000/graphql'
-        const headers ={ "content-type":"application/json" }
-
-
-        axios({
-            url : endpoint,
-            method: 'post',
-            headers: headers,
-            data: requestBody
-            })
+        actions.fetchEvents()
             .then((res) => {
                 if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
                 return res
             })
             .then(resData => {
                 
-                console.log(resData.data.data.events)
+                // console.log(resData.data.data.events)
                 setEventsList(resData.data.data.events)
                 setIsLoading(false)
             })

@@ -33,26 +33,22 @@ function Auth(props) {
         if (loginObj.username.trim().length === 0 ||
             loginObj.password.trim().length === 0) return
 
-
+        //API call
         actions.login(loginObj, stateLogin)
-
-                .then((res) => {
-                    if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
-                    return res
-                })
-                
-                .then(resData => {
-                    if(resData.data.data.login.token){
-                        console.log('token present')
-                        setUser({
-                            token:              resData.data.data.login.token,
-                            userId:             resData.data.data.login.userId,
-                            tokenExpriration :  resData.data.data.login.token
-                        })
-                    }
-                    console.log(resData.data.data)
-                })
-                .catch((err) => console.log(err)) 
+                    .then((res) => {
+                        if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
+                        return res
+                    })
+                    .then(resData => {
+                        if(resData.data.data.login.token){
+                            setUser({
+                                token:              resData.data.data.login.token,
+                                userId:             resData.data.data.login.userId,
+                                tokenExpriration :  resData.data.data.login.token
+                            })
+                        }
+                    })
+                    .catch((err) => console.log(err))
     }
 
     return (
