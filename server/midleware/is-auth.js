@@ -5,7 +5,7 @@ module.exports =
 
     const authHeader = await req.get('Authorization')
 
-    console.log("is auth :", authHeader)
+    // console.log("is auth :", authHeader)
     if(!authHeader){
         req.isAuth = false
         return next()
@@ -14,7 +14,7 @@ module.exports =
     /* token will be a string will have to split it to get the value
         after split [Bearer, hashedPassword]*/
     const token = authHeader.split(' ')[1] // Authorization: Bearer fghfklalaj
-    console.log("is auth :", token)
+    // console.log("is auth :", token)
 
     if(!token || token ===''){
         req.isAuth = false
@@ -24,7 +24,7 @@ module.exports =
     let decodedToken
     try{
         decodedToken = await jwt.verify(token, 'superLongerSuperSecretKey')
-        console.log("is auth decodedToken**:", decodedToken) 
+        // console.log("is auth decodedToken**:", decodedToken) 
     }catch(err){
         req.isAuth = false
         throw err
@@ -32,13 +32,13 @@ module.exports =
     }
     
     if(!decodedToken){
-        console.log('false test')
+        // console.log('false test')
         req.isAuth = false
         return next()
     }
     
     req.isAuth = true
     req.userId = decodedToken.userId
-    console.log("is auth userId **:", req.userId)
+    // console.log("is auth userId **:", req.userId)
     next()
 }

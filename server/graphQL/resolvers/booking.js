@@ -6,12 +6,22 @@ module.exports = {
     // Create booking Resolver _________________________________________________
     bookings:async (args, req)=>{
         //adds protected route
-        if(req.isAuth){ throw new Error('Not authenticated!') }
+        if(!req.isAuth){ throw new Error('Not authenticated!') }
 
+
+        console.log('you are fetching bookings')
         try{
         const bookings = await Booking.find()
-        return bookings.map(each =>  transformBooking(each)  )
-        }catch(err) {throw err}
+
+        
+        const newRes = bookings.map(each =>  transformBooking(each) )
+        
+        console.log('bookings:', newRes)
+    
+        return newRes
+        }catch(err) {
+            console.log('Err! ****************', err)
+            throw err}
     },
 
     
@@ -42,7 +52,7 @@ module.exports = {
     // cancel Booking Resolver____________________________________________________
     cancelBooking: async (args, req) => {
         //adds protected route
-        if(req.isAuth){ throw new Error('Not authenticated!') }
+        if(!req.isAuth){ throw new Error('Not authenticated!') }
 
         try{
             const booking = await Booking.findById(args.bookingId).populate('event');

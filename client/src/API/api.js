@@ -74,11 +74,17 @@ const actions ={
     },
 
     // #5. Fetch Events API call
-    fetchBookedEvents: async()=>{
+    fetchBookedEvents: async(token)=>{
+
+        const newHeader ={
+            "content-type":"application/json",
+            "Authorization": 'Bearer ' + token
+        }
+
         let resFromDB = await axios({
             url : baseURL,
             method: 'post',
-            headers: headers,
+            headers: newHeader,
             data : queriesGraphQL.fetchedBookedEventQuery
         })
         return resFromDB
