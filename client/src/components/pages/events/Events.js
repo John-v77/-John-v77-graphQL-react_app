@@ -75,7 +75,12 @@ function Events(props) {
     }
 
 
-    useEffect(()=>{fetchEvents()}, [])
+    useEffect(()=>{
+        let isMounted = true
+        isMounted && fetchEvents()
+
+        return(()=> isMounted = false)
+    }, [])
 
 
     return (

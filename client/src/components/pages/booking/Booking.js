@@ -57,7 +57,37 @@ function Booking(props) {
             }) 
     }
 
+    // Deleting Booking from DB
+    const deleteBooking =(bookingId)=>{
+        console.log('deleting bookings')
+        setStateZ({...stateZ, [stateZ.isLoading]: true})
 
+        actions.cancelBooking(bookingId)
+        .then((res) => {
+            if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
+            return res
+        })
+        .then(resData =>{
+            
+            console.log(resData.data.data._id)
+            setStateZ(stateZ =>{
+                
+                const prevBookings = stateZ.bookings.filter(booking => {
+                    return booking._id !== bookingId
+                } )
+
+                return {
+                        [stateZ.bookings]:prevBookings, 
+                        [stateZ.isLoading]: false
+                        }
+                })                   
+        })
+        .catch((err) => {
+            console.log(err)
+            setStateZ({...stateZ, [stateZ.isLoading]: false})
+        })
+
+    }
     
     //Display the list of bookings
     const displayBookings=(bookingList)=>{

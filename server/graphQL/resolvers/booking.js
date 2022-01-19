@@ -11,7 +11,7 @@ module.exports = {
 
         console.log('you are fetching bookings')
         try{
-        const bookings = await Booking.find()
+        const bookings = await Booking.find({user: req.userId})
 
         
         const newRes = bookings.map(each =>  transformBooking(each) )

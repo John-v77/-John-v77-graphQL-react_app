@@ -89,6 +89,21 @@ const actions ={
         })
         return resFromDB
     },
+
+    cancelBooking: async(data, token)=>{
+        const newHeader ={
+            "content-type":"application/json",
+            "Authorization": 'Bearer ' + token
+        }
+
+        let resFromDB = await axios({
+            url : baseURL,
+            method: 'post',
+            headers: newHeader,
+            data : queriesGraphQL.cancelEventMutation(data)
+        })
+        return resFromDB
+    }
 }
 
 

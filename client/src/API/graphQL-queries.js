@@ -104,7 +104,21 @@ const queriesGraphQL= {
                 }
             `
         }
-    }
+    },
+
+    // #7. GraphQl mutation canceling booked events
+    cancelEventMutation : (data) => {
+        return {
+          query:`
+              cancelBooking{
+                cancelBooking(eventId:"${data}"){
+                      _id
+                      title
+                  }
+              }
+          `
+      }
+  }
 }
 
 export default queriesGraphQL
