@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import actions from '../../../API/api'
 import { UserContext } from '../../aux-components/context/auth-context';
+import Spinner from '../../aux-components/spinner/Spinner';
+import BookingList from '../../aux-components/bookings-list/BookingList';
 
 
 function Booking(props) {
@@ -11,14 +13,31 @@ function Booking(props) {
     })
 
 
+    const temptData =[
+        {event:{
+            title: 'a walk in the park'
+        },
+        createdAt: '156.1235',
+        _id:'1'},
+        
+        {event:{
+            title: 'a walk in the park'
+        },
+        createdAt: '156.1235',
+        _id:'2'},
+    ] 
+
+
     const [user] = useContext(UserContext)
 
     //{...loginObj, [e.target.name] : e.target.value}
 
+
+    // Retrieving list of booking from DB
     const fetchBookings=()=>{
 
         setStateZ({...stateZ, [stateZ.isLoading]: true})
-        console.log(user.token, 'hey^^^')
+
         actions.fetchBookedEvents(user.token)
             .then((res) => {
                 if(res.status !==200 && res.status !==201)  {throw new Error('Failed')}
@@ -28,7 +47,7 @@ function Booking(props) {
                 
                 console.log(resData, 'server Res')
                 // setStateZ({...stateZ, 
-                //             [stateZ.bookings]: resData.data.data, 
+                //             [stateZ.bookings]: resData.data.data.bookingss, 
                 //             [stateZ.isLoading]: false
                 //         })
             })
@@ -36,14 +55,35 @@ function Booking(props) {
                 console.log(err)
                 setStateZ({...stateZ, [stateZ.isLoading]: false})
             }) 
-        
     }
 
-    useEffect(()=>{fetchBookings()}, [])
+
+    
+    //Display the list of bookings
+    const displayBookings=(bookingList)=>{
+
+        if(bookingList.length() === 0) return 'There are no bookings to be displayed'
+        //stateZ.bookings
+        return ( 
+            <BookingList
+            bookings ={temptData}
+            onDelete = {deleteBooking}
+            />
+        )
+    }
+
+    useEffect(()=>{
+        let isMounted = true
+        isMounted && fetchBookings()
+
+        return(()=> isMounted = false)
+    }, [])
     
     return (
         <div>
+            {stateZ.isLoading && <Spinner/>}
             <button onClick={fetchBookings}>load</button>
+            {displayBookings()}
         </div>
     );
 }
