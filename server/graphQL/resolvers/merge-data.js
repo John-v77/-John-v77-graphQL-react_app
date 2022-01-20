@@ -1,17 +1,26 @@
 const Event = require('../../models/event')
 const User = require('../../models/user')
 const { dateToString } = require('../../helpers/date')
+const DataLoader = require('dataloader')
 
+const eventLoader = new DataLoader((eventIds)=>{
+    return events(eventIds)
+})
 
+const userLoader = new DataLoader((userIds) =>{
+    console.log(userIds)
+    return User.find({_id:{$in: userIds}})
+})
+ 
 // function to be used to retrieve the user info in the resolver
 const user = async userId => {
     console.log('calling user')
     try {
-    const user = await User.findById(userId)
+    const user = await userLoader.load(userId.toString())
     return {
         ...user._doc,
         _id :user.id,
-        createdEvents: events.bind(this, user._doc.createEvents)
+        createdEvents: ()=> eventLoader.loadMany(user._doc.createEvents)
     }
     }catch(err) { throw err }
 }
@@ -37,14 +46,8 @@ const events = async eventIds => {
 // function to be used to retrieve a single event info in the resolver
 const singleEvent = async eventId => {
     try{
-        const event = await Event.findById(eventId)
-        return {
-            ...event._doc, 
-            _id: event.id,
-            user: user.bind(this, booking._doc.user),
-            event: singleEvent.bind(this, booking._doc.event),
-            creator: user.bind(this, event.creator)
-        }
+        const event = await eventLoader.load(eventId.toString())
+        return event
     }catch(err){throw err}
 }
 
