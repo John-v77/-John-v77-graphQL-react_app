@@ -4,30 +4,40 @@ const queriesGraphQL= {
     loginUserQuery : (data) => {
         return {
                     query:`
-                        query{
-                            login(email: "${data.username}", password:"${data.password}"){
+                        query Login($email: String!, $password: String!){
+                            login(email: $email, password: $password ){
                                 userId
                                 token
                                 tokenExpiration
                             }
                         }
-                    `
+                    `,
+                    variables:{
+                        email:data.username ,
+                        password: data.password
+                    }
         }
     },
+
 
     // #2. GraphQl mutation creating the user
     createUserMutation : (data) => {
         return {
                     query:`
-                        mutation{
-                            createUser(userInput: {email:"${data.username}", password:"${data.password}"}){
+                        mutation CreateUser($email: String!, $password: String!){
+                            createUser(userInput: {email:$email, password:$password}){
                                 _id
                                 email
                             }
                         }
-                    `
+                    `,
+                    variables:{
+                        email:data.username ,
+                        password:data.password
+                    }
         }
     },
+
 
     // #3. GraphQl query for fetching the events
     fetchEventsQuery : {
@@ -49,15 +59,21 @@ const queriesGraphQL= {
     },
     
 
+
     // #4. GraphQl mutation for creating events
     createEventMutation  : (data) => {
         return {
                     query:`
-                        mutation{
-                            createEvent(eventInput: {title:"${data.title}", 
-                                                    price:${+data.price},
-                                                    date:"${data.date}",
-                                                    description:"${data.description}",
+                        mutation CreateEvent(
+                            $title: String!", 
+                            $price: Float!,
+                            $date: String!,
+                            $description: String!"
+                        ){
+                            createEvent(eventInput: {title: $title, 
+                                                    price: $price,
+                                                    date: $date,
+                                                    description: $description,
                                                     }) {
                                                         _id
                                                         title
@@ -70,9 +86,18 @@ const queriesGraphQL= {
                                                         }
                                                     }
                         }
-                            `
+                    `,
+
+                    variables:{
+                        title: data.title,
+                        desc: +data.price,
+                        price: data.date,
+                        date: data.description
+                    }
         }
     },
+
+
 
     // #5. GraphQl mutation for fetching booked events
     fetchedBookedEventQuery : {
@@ -91,32 +116,45 @@ const queriesGraphQL= {
         `
     },
 
+
+
+
+
     // #6. GraphQl mutation for booking events
     bookEventMutation : (data) => {
           return {
             query:`
-                mutation{
-                    bookEvent(eventId:"${data}"){
+                mutation BookEvent($id: String!){
+                    bookEvent(eventId:$id){
                         _id
                         createdAt
                         updatedAt
                     }
                 }
-            `
+            `,
+            
+            variables:{
+                id:data
+            }
         }
     },
 
+
+    
     // #7. GraphQl mutation canceling booked events
     cancelEventMutation : (data) => {
         return {
           query:`
-              cancelBooking{
-                cancelBooking(eventId:"${data}"){
+              mutation cancelBooking($id: ID!){
+                cancelBooking(eventId:$id){
                       _id
                       title
                   }
               }
-          `
+          `,
+          variables:{
+              id: data
+          }
       }
   }
 }
