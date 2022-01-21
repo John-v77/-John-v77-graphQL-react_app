@@ -26,7 +26,7 @@ function NavBar(props) {
                     {!user.token &&     <li> <Link to='/auth'>  Login  </Link> </li>}
                                         <li> <Link to='/events'> Events </Link> </li>
                     {user.token &&  <>
-                                        <li> <Link to='/booking'> Booking </Link> </li>
+                                        {/* <li> <Link to='/booking'> Booking </Link> </li> */}
                                         <li> <Link to='/' onClick={logOut}>  Logout  </Link></li>
                                     </>
                     }

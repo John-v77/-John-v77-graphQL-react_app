@@ -5,7 +5,7 @@ import './eventList.css'
 function EventList(props) {
 
 
-    const events = props.events.map(each => {
+    const events = props.events.map((each, index) => {
         // console.log(each, 'id^^')
         return (
             <EventItem
@@ -16,6 +16,7 @@ function EventList(props) {
                 description={each.description}
                 creatorId={each.creator.email} //needs update once the back end is in order
                 userId={props.userId}
+                key={index}
             />
         )
     })
